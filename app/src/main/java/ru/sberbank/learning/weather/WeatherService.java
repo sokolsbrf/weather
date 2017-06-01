@@ -3,6 +3,9 @@ package ru.sberbank.learning.weather;
 import android.Manifest;
 import android.app.Service;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.IBinder;
 import android.support.v4.content.PermissionChecker;
 
@@ -15,6 +18,11 @@ import com.survivingwithandroid.weather.lib.provider.openweathermap.Openweatherm
 import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 
 public class WeatherService extends Service {
+
+    private double longitude;
+    private double latitude;
+
+
 
 
     private WeatherClient.WeatherEventListener weatherListener = new WeatherClient.WeatherEventListener() {
@@ -49,6 +57,11 @@ public class WeatherService extends Service {
             stopSelf();
             return START_NOT_STICKY;
         }
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(),true));
+
+
 
 
 

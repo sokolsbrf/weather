@@ -1,4 +1,4 @@
-package ru.sberbank.learning.weather.ui;
+package ru.sberbank.learning.weather;
 
 import android.app.Activity;
 import android.os.Bundle;
