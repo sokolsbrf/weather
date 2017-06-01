@@ -10,6 +10,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "OWM_API_KEY", project.OWM_API_KEY)
     }
     buildTypes {
         release {
