@@ -35,7 +35,7 @@ public class WeatherService extends Service {
 
                 if (weather != null) {
                     views.setTextViewText(R.id.tvDefinition,
-                            weather.weather.temperature.getTemp() + "°C");
+                            Math.round((weather.weather.temperature.getTemp())) + "°C");
                     views.setTextViewText(R.id.tvCity, weather.weather.location.getCity());
                     views.setTextViewText(R.id.tvCondition, weather.weather.currentCondition.getCondition());
 
