@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends Activity {
+    private static int LOCATION_PERMISSION_REQUEST_CODE = 777;
 
     private Button mStartServiceButton;
 
@@ -31,7 +32,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 if (PermissionChecker.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                         != PermissionChecker.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
                 } else {
                     Intent serviceIntent = new Intent(MainActivity.this,WeatherService.class);
                     startService(serviceIntent);
@@ -44,7 +45,7 @@ public class MainActivity extends Activity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (grantResults[0]
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE && grantResults[0]
                 == PermissionChecker.PERMISSION_GRANTED){
             Intent serviceIntent = new Intent(MainActivity.this,WeatherService.class);
             startService(serviceIntent);
