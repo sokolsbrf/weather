@@ -4,14 +4,18 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 
 public class WeatherWidget extends AppWidgetProvider {
+
+    private final String TAG = "WeatherService";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         context.startService(new Intent(context, WeatherService.class));
+        Log.d(TAG, "WeatherService start");
     }
 
     @Override
@@ -22,6 +26,7 @@ public class WeatherWidget extends AppWidgetProvider {
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         context.stopService(new Intent(context, WeatherService.class));
+        Log.d(TAG, "WeatherService stop");
     }
 
     @Override

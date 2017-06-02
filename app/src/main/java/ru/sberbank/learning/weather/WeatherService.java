@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 
 import com.survivingwithandroid.weather.lib.WeatherClient;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
+import com.survivingwithandroid.weather.lib.client.okhttp.WeatherDefaultClient;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
 import com.survivingwithandroid.weather.lib.exception.WeatherProviderInstantiationException;
 import com.survivingwithandroid.weather.lib.model.CurrentWeather;
@@ -34,7 +35,7 @@ public class WeatherService extends Service {
 
                 if (weather != null) {
                     views.setTextViewText(R.id.tvDefinition,
-                            Math.round((weather.weather.temperature.getTemp() - 273.15)) + "°C");
+                            weather.weather.temperature.getTemp() + "°C");
                     views.setTextViewText(R.id.tvCity, weather.weather.location.getCity());
                     views.setTextViewText(R.id.tvCondition, weather.weather.currentCondition.getCondition());
 
@@ -177,6 +178,7 @@ public class WeatherService extends Service {
         try {
             WeatherClient client = builder
                     .attach(this)
+                    .httpClient(WeatherDefaultClient.class)
                     .provider(new OpenweathermapProviderType())
                     .config(config)
                     .build();
