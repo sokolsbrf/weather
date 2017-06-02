@@ -2,10 +2,10 @@ package ru.sberbank.learning.weather;
 
 import android.Manifest;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.content.PermissionChecker;
-
 import com.survivingwithandroid.weather.lib.WeatherClient;
 import com.survivingwithandroid.weather.lib.WeatherConfig;
 import com.survivingwithandroid.weather.lib.exception.WeatherLibException;
@@ -44,14 +44,10 @@ public class WeatherService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (PermissionChecker.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PermissionChecker.PERMISSION_GRANTED) {
+        if (!isPermissionsGranted(this)) {
             stopSelf();
             return START_NOT_STICKY;
         }
-
-
-
         return START_STICKY;
     }
 
@@ -70,5 +66,13 @@ public class WeatherService extends Service {
         } catch (WeatherProviderInstantiationException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isPermissionsGranted(Context context) {
+        return PermissionChecker.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PermissionChecker.PERMISSION_GRANTED &&
+                PermissionChecker.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        == PermissionChecker.PERMISSION_GRANTED;
+
     }
 }
