@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.IBinder;
 import android.support.v4.content.PermissionChecker;
 import com.survivingwithandroid.weather.lib.WeatherClient;
@@ -16,6 +17,7 @@ import com.survivingwithandroid.weather.lib.request.WeatherRequest;
 
 public class WeatherService extends Service {
 
+    private LocationHelper locationHelper = new LocationHelper(this);
 
     private WeatherClient.WeatherEventListener weatherListener = new WeatherClient.WeatherEventListener() {
         @Override
@@ -48,6 +50,9 @@ public class WeatherService extends Service {
             stopSelf();
             return START_NOT_STICKY;
         }
+
+        Location location = locationHelper.getBestLastKnownLocation();
+
         return START_STICKY;
     }
 
