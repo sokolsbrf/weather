@@ -6,4 +6,12 @@
     tools:context="ru.sberbank.learning.weather.MainActivity">
 
 
+    <Button
+        android:id="@+id/button_start_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="startActivityForResult"
+        />
+
 </FrameLayout>

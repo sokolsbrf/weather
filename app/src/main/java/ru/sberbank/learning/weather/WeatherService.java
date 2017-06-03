@@ -150,12 +150,12 @@ public class WeatherService extends Service implements LocationListener {
 
         @Override
         public void onWeatherError(WeatherLibException wle) {
-
+            wle.printStackTrace();
         }
 
         @Override
         public void onConnectionError(Throwable t) {
-
+            t.printStackTrace();
         }
     };
 
@@ -190,22 +190,28 @@ public class WeatherService extends Service implements LocationListener {
         return START_STICKY;
     }
 
-    private void requestWeather(double latitude, double longitude) {
-        WeatherClient.ClientBuilder builder = new WeatherClient.ClientBuilder();
-        WeatherConfig config = new WeatherConfig();
-        config.ApiKey = BuildConfig.OWM_API_KEY;
-        config.lang = "ru";
-        try {
-            WeatherClient client = builder
-                    .attach(this)
-                    .httpClient(com.survivingwithandroid.weather.lib.WeatherClient.class)
-                    .provider(new OpenweathermapProviderType())
-                    .config(config)
-                    .build();
-            client.getCurrentCondition(new WeatherRequest(longitude, latitude), weatherListener);
-        } catch (WeatherProviderInstantiationException e) {
-            e.printStackTrace();
-        }
+    private void requestWeather(final double latitude, final double longitude) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WeatherClient.ClientBuilder builder = new WeatherClient.ClientBuilder();
+                WeatherConfig config = new WeatherConfig();
+                config.ApiKey = BuildConfig.OWM_API_KEY;
+                config.lang = "ru";
+
+                try {
+                    WeatherClient client = builder
+                            .attach(WeatherService.this)
+                            .httpClient(com.survivingwithandroid.weather.lib.StandardHttpClient.class)
+                            .provider(new OpenweathermapProviderType())
+                            .config(config)
+                            .build();
+                    client.getCurrentCondition(new WeatherRequest(longitude, latitude), weatherListener);
+                } catch (WeatherProviderInstantiationException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     @SuppressWarnings("MissingPermission")
